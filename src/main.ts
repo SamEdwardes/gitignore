@@ -145,9 +145,9 @@ async function donwloadFile(url: string) {
     Deno.exit(1);
   }
   if (fileResponse.body) {
-    const textData = await fileResponse.text()
-    console.log(`# ${url}`)
-    console.log(textData)
+    const textData = await fileResponse.text();
+    console.log(`# ${url}`);
+    console.log(textData);
   }
 }
 
@@ -167,15 +167,19 @@ await new Command()
       Deno.exit(0);
     },
   })
-  .option("-c, --commit [commit:string]", "Use the .gitignore from a specific commit. If you are using the gitignore CLI in a pipeline you may want to set this value to ensure reproducability.", {
-    default: "main"
-  })
+  .option(
+    "-c, --commit [commit:string]",
+    "Use the .gitignore from a specific commit. If you are using the gitignore CLI in a pipeline you may want to set this value to ensure reproducability.",
+    {
+      default: "main",
+    },
+  )
   .arguments("<language:template>")
   .action(({ commit }, language: string) => {
     const langKey = language as keyof typeof languagesToChooseFrom;
     const langFile = `${languagesToChooseFrom[langKey]}.gitignore`;
     const baseUrl = `https://github.com/github/gitignore/raw/${commit}`;
     const url = `${baseUrl}/${langFile}`;
-    donwloadFile(url);    
+    donwloadFile(url);
   })
   .parse(Deno.args);

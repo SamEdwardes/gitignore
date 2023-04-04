@@ -1,16 +1,20 @@
+compile version:
+    deno compile --allow-net --allow-write --target aarch64-apple-darwin     --output dist/gitignore-{{version}}-aarch64-apple-darwin       src/main.ts
+    deno compile --allow-net --allow-write --target x86_64-apple-darwin      --output dist/gitignore-{{version}}-x86_64-apple-darwin        src/main.ts
+    deno compile --allow-net --allow-write --target x86_64-unknown-linux-gnu --output dist/gitignore-{{version}}-x86_64-unknown-linux-gnu   src/main.ts
+    deno compile --allow-net --allow-write --target x86_64-pc-windows-msvc   --output dist/gitignore-{{version}}-x86_64-pc-windows-msvc     src/main.ts
+
+format:
+    deno fmt src/main.ts
+
 run:
-    deno run --allow-net --allow-write main.ts python
+    deno run --allow-net --allow-write src/main.ts python > .gitignore
 
 test:
-    deno run --allow-net --allow-write main.ts python
-    deno run --allow-net --allow-write main.ts r --append
-    deno run --allow-net --allow-write main.ts --list
+    deno run --allow-net --allow-write src/main.ts python > .gitignore
+    deno run --allow-net --allow-write src/main.ts r >> .gitingore
+    deno run --allow-net --allow-write src/main.ts --list
 
-compile:
-    deno compile --allow-net --allow-write --output dist/macos-arm/gitignore   --target aarch64-apple-darwin main.ts
-    deno compile --allow-net --allow-write --output dist/macos-x64/gitignore   --target x86_64-apple-darwin main.ts
-    deno compile --allow-net --allow-write --output dist/linux-x64/gitignore   --target x86_64-unknown-linux-gnu main.ts
-    deno compile --allow-net --allow-write --output dist/windows-x64/gitignore --target x86_64-pc-windows-msvc main.ts
 
 add-to-my-path:
-    cp dist/macos-arm/gitignore /Users/samedwardes/.local/bin/gitignore
+    cp dist/gitignore-0.1.0-alpha-aarch64-apple-darwin /Users/samedwardes/.local/bin/gitignore
