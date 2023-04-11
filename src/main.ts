@@ -153,7 +153,7 @@ async function donwloadFile(url: string) {
 
 await new Command()
   .name("gitignore")
-  .version("0.1.0-alpha")
+  .version("0.1.0")
   .description(
     "Get .gitignore templates from GitHub's .gitignore templates repo (https://github.com/github/gitignore).",
   )
