@@ -169,7 +169,7 @@ await new Command()
   })
   .option(
     "-c, --commit [commit:string]",
-    "Use the .gitignore from a specific commit. If you are using the gitignore CLI in a pipeline you may want to set this value to ensure reproducability.",
+    "Use the .gitignore from a specific commit. If you are using the gitignore CLI in a pipeline you may want to set this value to ensure reproducibility.",
     {
       default: "main",
     },
