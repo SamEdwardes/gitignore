@@ -23,7 +23,19 @@ compile:
     cd dist/{{version}}/{{arch_apple_m1}} && tar -czf gitignore-{{version}}-{{arch_apple_m1}}.tgz   gitignore  
     cd dist/{{version}}/{{arch_apple}}    && tar -czf gitignore-{{version}}-{{arch_apple}}.tgz      gitignore  
     cd dist/{{version}}/{{arch_linux}}    && tar -czf gitignore-{{version}}-{{arch_linux}}.tgz      gitignore  
-    cd dist/{{version}}/{{arch_windows}}  && tar -czf gitignore-{{version}}-{{arch_windows}}.tgz    gitignore.exe  
+    cd dist/{{version}}/{{arch_windows}}  && tar -czf gitignore-{{version}}-{{arch_windows}}.tgz    gitignore.exe
+
+release: compile
+    gh config set prompt disabled
+    gh release create v{{version}} \
+        dist/{{version}}/{{arch_apple_m1}}/gitignore-{{version}}-{{arch_apple_m1}}.tgz \
+        dist/{{version}}/{{arch_apple}}/gitignore-{{version}}-{{arch_apple}}.tgz \
+        dist/{{version}}/{{arch_linux}}/gitignore-{{version}}-{{arch_linux}}.tgz \
+        dist/{{version}}/{{arch_windows}}/gitignore-{{version}}-{{arch_windows}}.tgz \
+        --title v{{version}} \
+        --prerelease \
+        --draft
+    gh config set prompt enabled
 
 format:
     deno fmt src/main.ts
