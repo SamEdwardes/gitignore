@@ -1,18 +1,29 @@
+# Get the current version.
 version := `deno run --allow-net --allow-write src/main.ts --version | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" | rg -o '[0-9].*'`
 
+# Define the architectures
+arch_apple_m1 := "aarch64-apple-darwin"
+arch_apple    := "x86_64-apple-darwin"
+arch_linux    := "x86_64-unknown-linux-gnu"
+arch_windows  := "x86_64-pc-windows-msvc"
+
 compile:
+    mkdir -p dist/{{version}}/{{arch_apple_m1}}
+    mkdir -p dist/{{version}}/{{arch_apple}}
+    mkdir -p dist/{{version}}/{{arch_linux}}
+    mkdir -p dist/{{version}}/{{arch_windows}}
+    
     # Compile
-    deno compile --allow-net --allow-write --target aarch64-apple-darwin     --output dist/gitignore-{{version}}-aarch64-apple-darwin       src/main.ts
-    deno compile --allow-net --allow-write --target x86_64-apple-darwin      --output dist/gitignore-{{version}}-x86_64-apple-darwin        src/main.ts
-    deno compile --allow-net --allow-write --target x86_64-unknown-linux-gnu --output dist/gitignore-{{version}}-x86_64-unknown-linux-gnu   src/main.ts
-    deno compile --allow-net --allow-write --target x86_64-pc-windows-msvc   --output dist/gitignore-{{version}}-x86_64-pc-windows-msvc     src/main.ts
+    deno compile --allow-net --allow-write --target {{arch_apple_m1}}  --output dist/{{version}}/{{arch_apple_m1}}/gitignore   src/main.ts
+    deno compile --allow-net --allow-write --target {{arch_apple}}     --output dist/{{version}}/{{arch_apple}}/gitignore      src/main.ts
+    deno compile --allow-net --allow-write --target {{arch_linux}}     --output dist/{{version}}/{{arch_linux}}/gitignore      src/main.ts
+    deno compile --allow-net --allow-write --target {{arch_windows}}   --output dist/{{version}}/{{arch_windows}}/gitignore    src/main.ts
 
     # Zip
-    cd dist && tar -czf gitignore-{{version}}-aarch64-apple-darwin.tgz      gitignore-{{version}}-aarch64-apple-darwin    
-    cd dist && tar -czf gitignore-{{version}}-x86_64-apple-darwin.tgz       gitignore-{{version}}-x86_64-apple-darwin     
-    cd dist && tar -czf gitignore-{{version}}-x86_64-unknown-linux-gnu.tgz  gitignore-{{version}}-x86_64-unknown-linux-gnu
-    cd dist && tar -czf gitignore-{{version}}-x86_64-pc-windows-msvc.tgz    gitignore-{{version}}-x86_64-pc-windows-msvc.exe
-
+    cd dist/{{version}}/{{arch_apple_m1}} && tar -czf gitignore-{{version}}-{{arch_apple_m1}}.tgz   gitignore  
+    cd dist/{{version}}/{{arch_apple}}    && tar -czf gitignore-{{version}}-{{arch_apple}}.tgz      gitignore  
+    cd dist/{{version}}/{{arch_linux}}    && tar -czf gitignore-{{version}}-{{arch_linux}}.tgz      gitignore  
+    cd dist/{{version}}/{{arch_windows}}  && tar -czf gitignore-{{version}}-{{arch_windows}}.tgz    gitignore.exe  
 
 format:
     deno fmt src/main.ts
